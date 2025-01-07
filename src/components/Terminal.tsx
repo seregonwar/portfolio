@@ -21,6 +21,27 @@ const Terminal = () => {
     scrollToBottom();
   }, [history]);
 
+  // Auto-focus input on mount and when clicking anywhere in the terminal
+  useEffect(() => {
+    const terminal = terminalRef.current;
+    const handleClick = (e: MouseEvent) => {
+      const input = document.querySelector('input') as HTMLInputElement;
+      if (input && e.target !== input) {
+        input.focus();
+      }
+    };
+
+    if (terminal) {
+      terminal.addEventListener('click', handleClick);
+    }
+
+    return () => {
+      if (terminal) {
+        terminal.removeEventListener('click', handleClick);
+      }
+    };
+  }, []);
+
   const handleCommand = (cmd: string) => {
     const command = cmd.toLowerCase().trim();
     
@@ -55,16 +76,28 @@ const Terminal = () => {
   return (
     <div className="min-h-screen bg-terminal-bg p-4 font-mono text-terminal-text">
       <div className="mx-auto max-w-3xl">
-        <div className="rounded-lg border border-terminal-accent/20 bg-terminal-bg/95 overflow-hidden">
+        <div className="rounded-lg border border-terminal-accent/20 bg-terminal-bg/95 overflow-hidden shadow-lg backdrop-blur-sm">
           <TerminalHeader />
           
           <div 
             ref={terminalRef}
-            className="h-[70vh] overflow-y-auto p-4 space-y-4"
+            className="h-[70vh] overflow-y-auto p-4 space-y-4 scrollbar-thin scrollbar-thumb-terminal-accent/20 scrollbar-track-transparent"
           >
             <div className="text-terminal-accent animate-fade-in">
-              Welcome to my terminal portfolio! Type 'help' to see available commands.
-              <p className="mt-2 text-terminal-text/70">Breaking boundaries, one byte at a time</p>
+              <div className="mb-4 text-center">
+                <pre className="text-terminal-accent inline-block text-left">
+{`
+ ____                               
+/ ___|  ___ _ __ ___  __ _  ___  _ __  
+\\___ \\ / _ \\ '__/ _ \\/ _\` |/ _ \\| '_ \\ 
+ ___) |  __/ | |  __/ (_| | (_) | | | |
+|____/ \\___|_|  \\___|\\__, |\\___/|_| |_|
+                     |___/             
+`}
+                </pre>
+              </div>
+              <p className="mb-2">Welcome to my terminal portfolio! Type 'help' to see available commands.</p>
+              <p className="text-terminal-text/70">'Breaking boundaries, one byte at a time'</p>
             </div>
             
             <TerminalOutput history={history} />
