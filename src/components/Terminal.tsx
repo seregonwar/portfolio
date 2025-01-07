@@ -1,17 +1,35 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { toast } from '@/components/ui/use-toast';
+import { 
+  Github, 
+  Twitter, 
+  Mail, 
+  User, 
+  Shield, 
+  Code, 
+  Terminal as TerminalIcon,
+  Cpu,
+  Bug,
+  Wrench,
+  MessageSquare,
+  Send
+} from 'lucide-react';
 
 interface Command {
   command: string;
-  response: string;
+  response: string | JSX.Element;
 }
 
 const AVAILABLE_COMMANDS = {
   help: 'Shows available commands',
   clear: 'Clears the terminal',
-  balance: 'Shows your current balance',
-  transactions: 'Shows your transaction history',
-  info: 'Shows your personal information',
+  about: 'Shows information about me',
+  skills: 'Lists my core skills',
+  tools: 'Shows my tools and environment',
+  projects: 'Displays featured projects',
+  focus: 'Shows my current focus areas',
+  contact: 'Displays contact information',
+  socials: 'Shows social media links',
 };
 
 const Terminal = () => {
@@ -31,9 +49,13 @@ const Terminal = () => {
     inputRef.current?.focus();
   }, [history]);
 
+  const renderIcon = (icon: JSX.Element) => (
+    <span className="mr-2 inline-block">{icon}</span>
+  );
+
   const handleCommand = (cmd: string) => {
     const command = cmd.toLowerCase().trim();
-    let response = '';
+    let response: string | JSX.Element = '';
 
     switch (command) {
       case 'help':
@@ -44,21 +66,73 @@ const Terminal = () => {
       case 'clear':
         setHistory([]);
         return;
-      case 'balance':
-        response = 'Current Balance: $1,234.56';
+      case 'about':
+        response = (
+          <div className="space-y-2">
+            {renderIcon(<User size={16} />)}
+            <span className="font-bold text-terminal-accent">Computer Engineer & Reverse Engineer</span>
+            <p className="mt-2">
+              Cyber Security Engineer and Reverse Engineer specialising in low-level system architecture 
+              and security research. Currently pursuing Computer Engineering at La Sapienza University, 
+              Rome. Expert in console modding and vulnerability research, with a focus on PlayStation 
+              systems architecture and firmware analysis.
+            </p>
+          </div>
+        );
         break;
-      case 'transactions':
-        response = `Recent Transactions:
-- 2024-02-20: -$50.00 (Coffee Shop)
-- 2024-02-19: +$1000.00 (Salary)
-- 2024-02-18: -$25.00 (Bookstore)`;
+      case 'skills':
+        response = (
+          <div className="space-y-2">
+            {renderIcon(<Shield size={16} />)}
+            <span className="font-bold text-terminal-accent">Core Skills:</span>
+            <ul className="list-disc pl-6 space-y-1">
+              <li>{renderIcon(<Bug size={16} />)}Reverse Engineering - Binary analysis & firmware modification</li>
+              <li>{renderIcon(<Shield size={16} />)}Exploit Development - Vulnerability research</li>
+              <li>{renderIcon(<Code size={16} />)}Low Level Programming - Assembly & system internals</li>
+              <li>{renderIcon(<Cpu size={16} />)}Console Engineering - Gaming console architecture</li>
+              <li>{renderIcon(<Wrench size={16} />)}Tool Development - Security frameworks</li>
+            </ul>
+          </div>
+        );
         break;
-      case 'info':
-        response = `Personal Information:
-Name: John Doe
-Email: john@example.com
-Account Type: Premium
-Member Since: 2024-01-01`;
+      case 'focus':
+        response = (
+          <div className="space-y-2">
+            {renderIcon(<TerminalIcon size={16} />)}
+            <span className="font-bold text-terminal-accent">Current Focus:</span>
+            <ul className="list-disc pl-6 space-y-1">
+              <li>Advanced firmware analysis</li>
+              <li>Zero-day vulnerability research</li>
+              <li>Console security systems</li>
+              <li>Low-level optimisation</li>
+            </ul>
+          </div>
+        );
+        break;
+      case 'contact':
+        response = (
+          <div className="space-y-2">
+            {renderIcon(<MessageSquare size={16} />)}
+            <span className="font-bold text-terminal-accent">Connect:</span>
+            <div className="space-y-1">
+              <p>{renderIcon(<Send size={16} />)}Discord: Available on request</p>
+              <p>{renderIcon(<Send size={16} />)}Telegram: Available on request</p>
+              <p>{renderIcon(<Mail size={16} />)}Email: Available on request</p>
+            </div>
+          </div>
+        );
+        break;
+      case 'socials':
+        response = (
+          <div className="space-y-2">
+            {renderIcon(<Github size={16} />)}
+            <span className="font-bold text-terminal-accent">Social Links:</span>
+            <div className="space-y-1">
+              <p>{renderIcon(<Twitter size={16} />)}Twitter: @seregon</p>
+              <p>{renderIcon(<Github size={16} />)}GitHub: github.com/seregon</p>
+            </div>
+          </div>
+        );
         break;
       case '':
         return;
@@ -88,7 +162,7 @@ Member Since: 2024-01-01`;
             <div className="h-3 w-3 rounded-full bg-red-500"></div>
             <div className="h-3 w-3 rounded-full bg-yellow-500"></div>
             <div className="h-3 w-3 rounded-full bg-green-500"></div>
-            <span className="ml-2 text-sm text-terminal-text/70">Terminal Wallet v1.0</span>
+            <span className="ml-2 text-sm text-terminal-text/70">Seregon's Terminal Portfolio</span>
           </div>
           
           <div 
@@ -96,7 +170,8 @@ Member Since: 2024-01-01`;
             className="mb-4 h-[60vh] overflow-y-auto rounded bg-terminal-bg/50 p-4"
           >
             <div className="text-terminal-accent mb-4">
-              Welcome to Terminal Wallet! Type 'help' to see available commands.
+              Welcome to my terminal portfolio! Type 'help' to see available commands.
+              <p className="mt-2 text-terminal-text/70">Breaking boundaries, one byte at a time</p>
             </div>
             
             {history.map((entry, index) => (
