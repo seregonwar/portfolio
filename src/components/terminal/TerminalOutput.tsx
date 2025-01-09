@@ -29,22 +29,25 @@ const TerminalOutput = ({ history }: TerminalOutputProps) => {
     </span>
   );
 
-  const renderResponse = (response: string) => {
-    if (response.includes("Core Skills:")) {
-      return (
-        <div>
-          {response}
-          {renderSkillIcons()}
-        </div>
-      );
-    }
-    if (response.includes("Tools & Environment")) {
-      return (
-        <div>
-          {response}
-          {renderToolIcons()}
-        </div>
-      );
+  const renderResponse = (response: string | JSX.Element) => {
+    if (typeof response === 'string') {
+      if (response.includes("Core Skills:")) {
+        return (
+          <div>
+            {response}
+            {renderSkillIcons()}
+          </div>
+        );
+      }
+      if (response.includes("Tools & Environment")) {
+        return (
+          <div>
+            {response}
+            {renderToolIcons()}
+          </div>
+        );
+      }
+      return response;
     }
     return response;
   };
