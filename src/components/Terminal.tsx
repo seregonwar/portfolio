@@ -9,6 +9,7 @@ import { commandHandlers, AVAILABLE_COMMANDS } from './terminal/commandHandlers'
 const Terminal = () => {
   const [input, setInput] = useState('');
   const [history, setHistory] = useState<Command[]>([]);
+  const [isTyping, setIsTyping] = useState(false);
   const terminalRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -21,13 +22,14 @@ const Terminal = () => {
     scrollToBottom();
   }, [history]);
 
-  // Auto-focus input on mount and when clicking anywhere in the terminal
   useEffect(() => {
     const terminal = terminalRef.current;
     const handleClick = (e: MouseEvent) => {
       const input = document.querySelector('input') as HTMLInputElement;
       if (input && e.target !== input) {
         input.focus();
+        setIsTyping(true);
+        setTimeout(() => setIsTyping(false), 100);
       }
     };
 
@@ -42,7 +44,7 @@ const Terminal = () => {
     };
   }, []);
 
-  const handleCommand = (cmd: string) => {
+  const handleCommand = async (cmd: string) => {
     const command = cmd.toLowerCase().trim();
     
     if (command === '') return;
@@ -53,7 +55,11 @@ const Terminal = () => {
 
     const handler = commandHandlers[command];
     if (handler) {
+      setIsTyping(true);
+      // Simulate processing time for more terminal-like feel
+      await new Promise(resolve => setTimeout(resolve, 300));
       setHistory(prev => [...prev, { command, response: handler() }]);
+      setIsTyping(false);
     } else {
       toast({
         variant: "destructive",
@@ -75,9 +81,9 @@ const Terminal = () => {
 
   return (
     <div className="min-h-screen bg-terminal-bg p-4 font-mono text-terminal-text">
-      <div className="mx-auto max-w-3xl">
-        <div className="rounded-lg border border-terminal-accent/20 bg-terminal-bg/95 overflow-hidden shadow-lg backdrop-blur-sm">
-          <TerminalHeader />
+      <div className="mx-auto max-w-3xl animate-fade-in">
+        <div className="rounded-lg border border-terminal-accent/20 bg-terminal-bg/95 overflow-hidden shadow-lg backdrop-blur-sm transition-all duration-300 hover:border-terminal-accent/40">
+          <TerminalHeader isTyping={isTyping} />
           
           <div 
             ref={terminalRef}
@@ -85,7 +91,7 @@ const Terminal = () => {
           >
             <div className="text-terminal-accent animate-fade-in">
               <div className="mb-4 text-center">
-                <pre className="text-terminal-accent inline-block text-left">
+                <pre className="text-terminal-accent inline-block text-left animate-pulse">
 {`
  ____                               
 / ___|  ___ _ __ ___  __ _  ___  _ __  
@@ -96,8 +102,8 @@ const Terminal = () => {
 `}
                 </pre>
               </div>
-              <p className="mb-2">Welcome to my terminal portfolio! Type 'help' to see available commands.</p>
-              <p className="text-terminal-text/70">'Breaking boundaries, one byte at a time'</p>
+              <p className="mb-2 animate-fade-in">Welcome to my terminal portfolio! Type 'help' to see available commands.</p>
+              <p className="text-terminal-text/70 animate-fade-in delay-200">'Breaking boundaries, one byte at a time'</p>
             </div>
             
             <TerminalOutput history={history} />
@@ -108,6 +114,7 @@ const Terminal = () => {
               input={input}
               setInput={setInput}
               onSubmit={handleSubmit}
+              isTyping={isTyping}
             />
           </div>
         </div>
