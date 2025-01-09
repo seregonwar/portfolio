@@ -3,7 +3,7 @@ import { CommandHandlers } from './types';
 import { Shield, Code, Terminal, Cpu, Bug, Wrench, MessageSquare, Send, Github, Twitter, Mail, User } from 'lucide-react';
 
 const renderIcon = (icon: JSX.Element) => (
-  <span className="mr-2 inline-block">{icon}</span>
+  <span className="mr-2 inline-block text-terminal-accent">{icon}</span>
 );
 
 export const AVAILABLE_COMMANDS: Record<string, string> = {
@@ -29,6 +29,7 @@ export const commandHandlers: CommandHandlers = {
         Rome. Expert in console modding and vulnerability research, with a focus on PlayStation 
         systems architecture and firmware analysis.
       </p>
+      <p className="mt-2 italic text-terminal-accent">"Breaking boundaries, one byte at a time"</p>
     </div>
   ),
 
@@ -43,6 +44,41 @@ export const commandHandlers: CommandHandlers = {
         <li>{renderIcon(<Cpu size={16} />)}Console Engineering - Gaming console architecture</li>
         <li>{renderIcon(<Wrench size={16} />)}Tool Development - Security frameworks</li>
       </ul>
+    </div>
+  ),
+
+  tools: () => (
+    <div className="space-y-2 animate-fade-in">
+      {renderIcon(<Wrench size={16} />)}
+      <span className="font-bold text-terminal-accent">Tools & Environment:</span>
+      <div className="space-y-2 mt-2">
+        <p>Development Tools:</p>
+        <div className="flex flex-wrap gap-2">
+          <span className="px-2 py-1 bg-terminal-bg/50 rounded">IDA Pro</span>
+          <span className="px-2 py-1 bg-terminal-bg/50 rounded">Ghidra</span>
+          <span className="px-2 py-1 bg-terminal-bg/50 rounded">WireShark</span>
+          <span className="px-2 py-1 bg-terminal-bg/50 rounded">Docker</span>
+          <span className="px-2 py-1 bg-terminal-bg/50 rounded">VSCode</span>
+          <span className="px-2 py-1 bg-terminal-bg/50 rounded">Git</span>
+        </div>
+      </div>
+    </div>
+  ),
+
+  projects: () => (
+    <div className="space-y-2 animate-fade-in">
+      {renderIcon(<Code size={16} />)}
+      <span className="font-bold text-terminal-accent">Featured Projects:</span>
+      <div className="space-y-4 mt-2">
+        <div className="p-4 bg-terminal-bg/30 rounded-lg hover:bg-terminal-bg/40 transition-colors">
+          <h3 className="text-terminal-accent">MetaForge</h3>
+          <p>Advanced firmware analysis and modification toolkit</p>
+        </div>
+        <div className="p-4 bg-terminal-bg/30 rounded-lg hover:bg-terminal-bg/40 transition-colors">
+          <h3 className="text-terminal-accent">PFU-PupFileUnpacker</h3>
+          <p>PlayStation firmware unpacking and analysis tool</p>
+        </div>
+      </div>
     </div>
   ),
 
@@ -65,8 +101,8 @@ export const commandHandlers: CommandHandlers = {
       <span className="font-bold text-terminal-accent">Connect:</span>
       <div className="space-y-1">
         <p>{renderIcon(<Send size={16} />)}Discord: Available on request</p>
-        <p>{renderIcon(<Send size={16} />)}Telegram: Available on request</p>
-        <p>{renderIcon(<Mail size={16} />)}Email: Available on request</p>
+        <p>{renderIcon(<Send size={16} />)}Telegram: @SeregonWar</p>
+        <p>{renderIcon(<Mail size={16} />)}Email: seregonwar@gmail.com</p>
       </div>
     </div>
   ),
@@ -76,8 +112,9 @@ export const commandHandlers: CommandHandlers = {
       {renderIcon(<Github size={16} />)}
       <span className="font-bold text-terminal-accent">Social Links:</span>
       <div className="space-y-1">
-        <p>{renderIcon(<Twitter size={16} />)}Twitter: @seregon</p>
-        <p>{renderIcon(<Github size={16} />)}GitHub: github.com/seregon</p>
+        <p>{renderIcon(<Twitter size={16} />)}Twitter: @SeregonWar</p>
+        <p>{renderIcon(<Github size={16} />)}GitHub: github.com/seregonwar</p>
+        <p>Ko-fi: ko-fi.com/seregon</p>
       </div>
     </div>
   ),
